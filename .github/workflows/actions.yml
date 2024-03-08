@@ -45,7 +45,7 @@ jobs:
       - name: Get build artifacts
         uses: actions/download-artifact@v4.1.4
         with:
-         - name: deploy-war-file
+         name: deploy-war-file
       - name: Outpul file name
         run: echo "${{ needs.build.outputs.file-name }}"
            
