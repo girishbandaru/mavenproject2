@@ -29,6 +29,12 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: List generated artifacts
       run: ls -R webapp/target
+    - name: upload artifacts
+      uses: actions/upload-artifact@v4.3.1
+      with: 
+        name: dist-files
+        path: webapp/target
+      
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
    # - name: Update dependency graph
