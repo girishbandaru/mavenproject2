@@ -30,9 +30,9 @@ jobs:
       run: mvn -B package --file pom.xml
     #- name: List generated artifacts
     #  run: ls -R webapp/target
-    - name: Name of the war file creted
+    - name: Name of the war file created
       id: publish
-      run: find webapp/targer/*.war -type f -execdir echo 'file-name={}' >> $GITHUB_OUTPUT ';' 
+      run: find webapp/target/*.war -type f -execdir echo 'file-name={}' >> $GITHUB_OUTPUT ';' 
     - name: upload artifacts
       uses: actions/upload-artifact@v4.3.1
       with: 
