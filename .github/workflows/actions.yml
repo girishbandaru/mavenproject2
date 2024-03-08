@@ -7,7 +7,6 @@
 # documentation.
 
 name: Java CI with Maven
-
 on: workflow_dispatch
 #  push:
 #    branches: [ "main" ]
@@ -17,6 +16,8 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      file-name: ${{ steps.publish.outputs.file-name }}
     steps:
     - uses: actions/checkout@v4.1.1
     - name: Set up JDK 11
@@ -27,13 +28,27 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: List generated artifacts
-      run: ls -R webapp/target
+    #- name: List generated artifacts
+    #  run: ls -R webapp/target
+    - name: Name of the war file creted
+      id: publish
+      run: find webapp/targer/*.war -type f -execdir echo 'file-name={}' >> $GITHUB_OUTPUT ';' 
     - name: upload artifacts
       uses: actions/upload-artifact@v4.3.1
       with: 
-        name: dist-files
+        name: deploy-war-file
         path: webapp/target
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get build artifacts
+        with:
+         - name: deploy-war-file
+      - name: Outpul file name
+        run: echo "${{ needs.build.outputs.file-name }}"
+           
+    
       
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
